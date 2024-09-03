@@ -149,6 +149,7 @@ try{
     body: JSON.stringify(createRequest) 
   });
   if (response.ok) {
+    fetchTopic()
     const data = await response.json();  
     console.log('Success:', data);
     setProblems((prevProblems)=>[...prevProblems,data]);
@@ -173,6 +174,7 @@ const deleteproblem = async (problemId)=>{
     }
   });
   if(response.status===204){
+    fetchTopic()
     console.log("Deleted Succesfully")  
     setProblems((prevProblems)=>prevProblems.filter(prevProblems=>prevProblems.id !== problemId))
   }
