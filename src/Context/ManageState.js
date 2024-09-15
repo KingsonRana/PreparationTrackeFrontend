@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import states from "./context"
 
 const ManageState = (props)=>{
@@ -19,36 +19,44 @@ const ManageState = (props)=>{
     let response
     try{
      response = await fetch(url, option)
+     let data = await response.json()
+     setTopic(data)
+     console.log(data)
     }catch(e){
       console.log(e)
     }
     
-    let data = await response.json()
-    setTopic(data)
+  
     setLoading(false)
  }
 
- const fetchProblems = async (topicId)=>{
-  setLoading(true)
-  const url = `https://localhost:7156/getProblems/${topicId}`
+ const fetchProblems = useCallback(async (topicId) => {
+  setLoading(true);
+  console.log(topicId)
+  console.log(`https://localhost:7156/getProblems/${topicId}`)
+  const url = `https://localhost:7156/getProblems/${topicId}`;
   const option = {
-      method: 'GET',
-      headers: {
-          'Accept': 'text/plain',
-          'Content-Type': 'application/json'
-}
+    method: 'GET',
+    headers: {
+      'Accept': 'text/plain',
+        'Content-Type': 'application/json'
+    }
+  };
+
+  let response;
+  try {
+    response = await fetch(url, option);
+    let data = await response.json();
+    console.log(data)
+    setProblems(data);
+  } catch (e) {
+    console.log("error while fetching");
   }
-  let response
-  try{
-   response = await fetch(url, option)
-  }catch(e){
-    console.log(e)
-  }
-  
-  let data = await response.json()
-  setProblems(data)
-  setLoading(false)
- }
+
+ 
+
+  setLoading(false);
+}, []); // Empty array ensures fetchProblems is memoized and does not change
 
  const addTopic = async (name, minQuestion)=>{
   setLoading(true)
@@ -77,37 +85,46 @@ const ManageState = (props)=>{
   }
   setLoading(false)
  }
- const editTopic = async(name,minQuestion,id)=>{
-  setLoading(true)
+ const editTopic = async (name, minQuestion, id) => {
+  setLoading(true);
+
   try {
     const response = await fetch(`https://localhost:7156/${id}`, {
-      method: 'PUT', 
+      method: 'PUT',
       headers: {
-        'Accept': 'text/plain',
+        'Accept': 'application/json', // Changed to 'application/json' as it's more standard for JSON responses
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-      name,
-      minQuestion
+        name,
+        minQuestion
       })
     });
+
     if (response.ok) {
       const updatedTopic = await response.json();
-      console.log(updatedTopic)
-      // Update the topics in the context
-      setTopic((prevTopics) => prevTopics.map((topic) =>
-          topic.id === id ? updatedTopic : topic
+
+      // Log the updated topic for debugging
+      console.log('Update successful:', updatedTopic);
+
+      // Update the topic state
+      setTopic((prevTopics) => 
+        prevTopics.map((topic) => 
+          topic.guid === id ? updatedTopic : topic
         )
       );
-
-      console.log('Update successful:', updatedTopic);
+    } else {
+      // Handle non-OK responses
+      console.error('Failed to update topic:', response.statusText);
     }
-   
   } catch (error) {
-   console.log(error)
+    // Log the error
+    console.error('Error updating topic:', error);
+  } finally {
+    setLoading(false);
   }
-  setLoading(false)
- }
+};
+
 const deleteTopic = async (id)=>{
   setLoading(true)
   try{
@@ -121,7 +138,7 @@ const deleteTopic = async (id)=>{
     });
     if(response.status===204){
       console.log("Deleted Succesfully")
-      setTopic((prevTopics)=>prevTopics.filter(prevTopic=>prevTopic.id !== id))
+      setTopic((prevTopics)=>prevTopics.filter(prevTopic=>prevTopic.guid !== id))
     }
     else if (response.status === 404) {
       // Topic not found

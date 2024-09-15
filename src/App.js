@@ -12,6 +12,7 @@ import Sidebar from './Component/Sidebar';
 import TopicCard from './Component/TopicCard';
 import ProblemCard from './Component/ProblemsCard';
 import About from './Component/About';
+import ProblemDetails from './Component/ProblemDetailView';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
               <Route exact path = "/" element={<TopicCard/>}></Route>
               <Route exact path = "/:topicId" element={<ProblemCard/>}></Route>
               <Route exact path="/About" element={<About/>}></Route>
+              <Route exact path='/:topicID/:problemId' element={<ProblemDetails/>}></Route>
             </Routes>
           </main>
             </Router>

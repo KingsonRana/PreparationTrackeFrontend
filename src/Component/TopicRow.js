@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import states from "../Context/context";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -11,8 +11,9 @@ import { useNavigate } from "react-router-dom";
   const navigate = useNavigate();
   const handleClickDelete = async (id)=>{
    deleteTopic(id)
-  }
-   
+  }   
+
+ 
   const handleClickEdit = (id)=>{
     console.log("Clicked")
      setType(2)
@@ -45,12 +46,11 @@ import { useNavigate } from "react-router-dom";
       });
 
       const navToProblems = (topicId)=>{
-        fetchProblems(topicId)
         navigate(`/${topicId}`)
       }
     return(
         <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted row" 
-        onClick={(e)=>{navToProblems(topicdata.id);}}
+        onClick={(e)=>{navToProblems(topicdata.guid);}}
         >
          <td className="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">{topicdata.id}</td>
          <td className="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">{topicdata.name}</td>
@@ -63,7 +63,7 @@ import { useNavigate } from "react-router-dom";
            <button 
             onClick={(e)=>{
               e.stopPropagation();
-              handleClickEdit(topicdata.id)
+              handleClickEdit(topicdata.guid)
             }}
            >
                   <FontAwesomeIcon icon={faPenFancy} className="edit"/>
@@ -72,7 +72,7 @@ import { useNavigate } from "react-router-dom";
                     <button 
                      onClick={(e)=>{
                       e.stopPropagation();
-                         handleClickDelete(topicdata.id);
+                         handleClickDelete(topicdata.guid);
                      }}
                     >            
           <FontAwesomeIcon icon={faTrashCan} className="delete"/>     

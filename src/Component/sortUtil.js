@@ -9,6 +9,9 @@
 export const getComparator = (field, direction) => {
     console.log(field + " " + direction + " ")
     return (a, b) => {
+      if(field===""){
+        field="createOn";
+      }
       const valueA = a[field];
       const valueB = b[field];
   

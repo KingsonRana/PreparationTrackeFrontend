@@ -1,6 +1,8 @@
+import { faCaretDown, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState, useEffect, useRef } from "react";
 
-export default function SortBy({ name,setSortKey,setSortOrder, sort, sortOrder, sortKey}) {
+export default function SortBy({ name, sort,sortOrder, sortKey}) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null); // Create a ref to track the dropdown
 
@@ -23,7 +25,6 @@ export default function SortBy({ name,setSortKey,setSortOrder, sort, sortOrder, 
   }, []);
   
   const handleAscending = ()=>{
- 
    sort(name,'asc')
   }
   const handleDescending = ()=>{
@@ -34,7 +35,6 @@ export default function SortBy({ name,setSortKey,setSortOrder, sort, sortOrder, 
     <div
       ref={dropdownRef}
       className="relative inline-block text-left"
-      
       style={{ padding: "5px", marginLeft: "5px" }}
     >
       <div>
@@ -47,18 +47,8 @@ export default function SortBy({ name,setSortKey,setSortOrder, sort, sortOrder, 
           onClick={toggleDropdown}
         >
           {name}
-          <svg
-            className="-mr-1 h-5 w-5 text-gray-400"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            aria-hidden="true"
-          >
-            <path
-              fillRule="evenodd"
-              d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-              clipRule="evenodd"
-            />
-          </svg>
+          <FontAwesomeIcon className="-mr-1 h-3 w-3 text-gray-400 sortIcon" icon={faCaretDown} />
+          {name===sortKey?(<FontAwesomeIcon  className="-mr-1 h-3 w-3 text-400 sortIcon sortIconCross" icon={faXmark} onClick={()=>{sort("","asc")}} />):""}
         </button>
       </div>
 
@@ -71,7 +61,7 @@ export default function SortBy({ name,setSortKey,setSortOrder, sort, sortOrder, 
         >
           <div className="py-1 sortbtn" role="none">
             <button
-              className="block px-4 py-2 text-sm text-gray-700"
+              className={`block px-4 py-2 text-sm text-gray-700  ${name===sortKey&&sortOrder==='asc'?`active`:``}`}
               role="menuitem"
               tabIndex="-1"
               id="menu-item-0"
@@ -79,22 +69,19 @@ export default function SortBy({ name,setSortKey,setSortOrder, sort, sortOrder, 
                 console.log("Ascending");
                 handleAscending()
                 setIsOpen(false);
-                
-
               }}
             >
               Ascending
             </button>
             <button
-              className="block px-4 py-2 text-sm text-gray-700"
+              className={`block px-4 py-2 text-sm text-gray-700  ${name===sortKey&&sortOrder==='desc'?`active`:``}`}
               role="menuitem"
               tabIndex="-1"
               id="menu-item-1"
               onClick={() => {
                 console.log("Descending");
                 handleDescending()
-                setIsOpen(false);
-                
+                setIsOpen(false);  
               }}
             >
               Descending

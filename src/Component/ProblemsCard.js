@@ -5,6 +5,8 @@ import CreateProblem from "./Forms/CreateProbelm";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useParams } from "react-router-dom";
+import { getComparator } from "./sortUtil";
+import SortBy from "./SortBy";
 
 export default function ProblemCard(){
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -12,17 +14,40 @@ export default function ProblemCard(){
   const [id, setId] = useState(null)
   const openModal = () =>{ setModalIsOpen(true);}
   const closeModal = () => {setModalIsOpen(false); setId(null) ;setName(''); setLevel(''); setLink('');setRequireRework('')};
-  const {problems,loading} = useContext(states)
+  const {problems,loading,fetchProblems} = useContext(states)
   const { topicId } = useParams();
   const [name, setName] = useState();
   const [level, setLevel] = useState();
   const [link, setLink] = useState();
   const [requireRework, setRequireRework] = useState();
   const [searchQuery,setSearchQuery] = useState("")
+  const [sortKey, setSortKey] = useState("");
+  const [sortOrder, setSortOrder] = useState("asc");
+  const [filteredProblems,setFilteredProblems] = useState(problems)
 
- 
-  const filteredProblems = problems.filter((p)=> p.name.toLowerCase().includes(searchQuery.toLowerCase()))
+  useEffect(()=>{
+    fetchProblems(topicId)
+  },[topicId,fetchProblems])
+
+  useEffect(() => {
+    const filtered = problems.filter((p) =>
+      p.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredProblems(filtered);
+  }, [problems, searchQuery]);
+
   
+  const keys = problems[0] ? Object.keys(problems[0]) : [];
+
+  const handleSort = (name, order) => {
+    setSortKey(name);
+    setSortOrder(order);
+  };
+  useEffect(() => {
+    const comparator = getComparator(sortKey, sortOrder);
+    setFilteredProblems((prevProblems) => [...prevProblems].sort(comparator));
+  }, [sortKey, sortOrder]);
+
     return(
         <div className="bg-white shadow-md rounded-lg p-6 dataContainer">
         <CreateProblem modalIsOpen={modalIsOpen} closeModal={closeModal} type={type} id={id} topicId={topicId} pname={name} plevel={level} plink={link} prequireRework={requireRework}/>
@@ -67,6 +92,22 @@ export default function ProblemCard(){
             />
           </div>
         </div>
+        <div className="mb-4">
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <h4 className="text-lg">Sort By</h4>
+          {keys.map((key, index) => (
+            key!=='link'?
+            <SortBy
+              key={index}
+              name={key}
+            
+              sort={handleSort}
+              sortOrder={sortOrder}
+              sortKey={sortKey}
+            />:""
+          ))}
+        </div>
+      </div>
 
         <div className="relative w-full overflow-auto card">
           
@@ -97,7 +138,7 @@ export default function ProblemCard(){
                   Difficulty
                 </th>
                 <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
-                  Rework Required
+                  Rework 
                 </th>
                 <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
                   Actions

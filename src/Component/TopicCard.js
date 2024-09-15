@@ -20,6 +20,7 @@ export default function TopicCard() {
   const [filteredTopics, setFilteredTopics] = useState(topic);
 
   // Filter topics based on search query
+
   useEffect(() => {
     const filtered = topic.filter((t) =>
       t.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -101,7 +102,7 @@ export default function TopicCard() {
 
       <div className="mb-4">
         <div style={{ display: "flex", alignItems: "center" }}>
-          <h4 className="text-lg">Sort By</h4>
+         <div> <h4 className="text-lg">Sort By</h4></div>
           {keys.map((key, index) => (
             <SortBy
               key={index}

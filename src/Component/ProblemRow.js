@@ -15,7 +15,7 @@ export default function ProblemRow({problem,openModal,setType,setId,setName, set
 
  const handleClickEdit = ()=>{
   setType(2)
-  setId(problem.id)
+  setId(problem.guid)
   setName(problem.name)
   setLevel(problem.level)
   setLink(problem.link)
@@ -51,7 +51,7 @@ const createdOnReadable = new Date(problem.createdOn).toLocaleString('en-US', {
                 <td className="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">{createdOnReadable}</td>
                 <td className="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">{updatedOnReadable}</td>
                 <td className="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                  <a className="text-blue-500 hover:underline" href={`${problem.link}`}>
+                  <a className="text-blue-500 hover:underline" href={`${problem.link}`} >
                     View
                   </a>
                 </td>
@@ -62,7 +62,7 @@ const createdOnReadable = new Date(problem.createdOn).toLocaleString('en-US', {
                     <button onClick={()=>{handleClickEdit()}}>
                     <FontAwesomeIcon icon={faPenFancy} className="edit"/>
                     </button>
-                    <button onClick={()=>{handleClickDelete(problem.id)}}>
+                    <button onClick={()=>{handleClickDelete(problem.guid)}}>
                        <FontAwesomeIcon icon={faTrashCan} className="delete"/>
                     </button>
                   </div>

@@ -198,20 +198,29 @@ td{
 }
 
 .sortbtn :hover{
- background-color: #2fbbe6;
+ background-color: #b4f36d;
  color: rgb(255, 255, 255);
 }
 .sortbtn button{
   width: 100%;
 }
 .active{
-  background-color: #2fbbe6;
+  background-color: #08566e;
   color: rgb(255, 255, 255);
 }
 .active:hover{
-  background-color: #2fbbe6;
+  background-color: #08566e;
   color: rgb(255, 255, 255);
 }
 .active svg{
   color: rgb(255, 255, 255);
+}
+.sortIcon{
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+}
+.sortIcon.sortIconCross{
+  color: red;
 }
