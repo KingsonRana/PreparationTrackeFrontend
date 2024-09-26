@@ -26,7 +26,7 @@ export default function SortBy({ name, sort,sortOrder, sortKey}) {
   
   const handleAscending = ()=>{
    sort(name,'asc')
-  }
+  } 
   const handleDescending = ()=>{
     sort(name, 'desc')
   }
@@ -48,7 +48,8 @@ export default function SortBy({ name, sort,sortOrder, sortKey}) {
         >
           {name}
           <FontAwesomeIcon className="-mr-1 h-3 w-3 text-gray-400 sortIcon" icon={faCaretDown} />
-          {name===sortKey?(<FontAwesomeIcon  className="-mr-1 h-3 w-3 text-400 sortIcon sortIconCross" icon={faXmark} onClick={()=>{sort("","asc")}} />):""}
+          {name===sortKey?(<FontAwesomeIcon  className="-mr-1 h-3 w-3 text-400 sortIcon sortIconCross" icon={faXmark} 
+          onClick={()=>{sort("default","asc")}} />):""}
         </button>
       </div>
 

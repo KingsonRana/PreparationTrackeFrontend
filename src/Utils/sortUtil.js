@@ -7,10 +7,11 @@
  * @returns {function} - Comparator function for sorting.
  */
 export const getComparator = (field, direction) => {
-    console.log(field + " " + direction + " ")
+ 
     return (a, b) => {
-      if(field===""){
-        field="createOn";
+      if(field==="default"){
+        field="createdOn";
+        direction = "asc"; 
       }
       const valueA = a[field];
       const valueB = b[field];

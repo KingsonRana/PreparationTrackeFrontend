@@ -1,12 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import states from "../Context/context";
-import ProblemRow from "./ProblemRow";
-import CreateProblem from "./Forms/CreateProbelm";
+import ProblemRow from "../Component/ProblemRow";
+import CreateProblem from "../Component/Forms/CreateProbelm";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useParams } from "react-router-dom";
-import { getComparator } from "./sortUtil";
-import SortBy from "./SortBy";
+import { getComparator } from "../Utils/sortUtil";
+import SortBy from "../Component/SortBy";
+import TopicToggle from "../Component/TopicToggle";
 
 export default function ProblemCard(){
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -21,7 +22,7 @@ export default function ProblemCard(){
   const [link, setLink] = useState();
   const [requireRework, setRequireRework] = useState();
   const [searchQuery,setSearchQuery] = useState("")
-  const [sortKey, setSortKey] = useState("");
+  const [sortKey, setSortKey] = useState("default");
   const [sortOrder, setSortOrder] = useState("asc");
   const [filteredProblems,setFilteredProblems] = useState(problems)
 
@@ -46,13 +47,15 @@ export default function ProblemCard(){
   useEffect(() => {
     const comparator = getComparator(sortKey, sortOrder);
     setFilteredProblems((prevProblems) => [...prevProblems].sort(comparator));
-  }, [sortKey, sortOrder]);
+  }, [problems,sortKey, sortOrder]);
+
+  
 
     return(
         <div className="bg-white shadow-md rounded-lg p-6 dataContainer">
         <CreateProblem modalIsOpen={modalIsOpen} closeModal={closeModal} type={type} id={id} topicId={topicId} pname={name} plevel={level} plink={link} prequireRework={requireRework}/>
         <div className="flex justify-between items-center mb-4 dataContainerHeader">
-          <h2 className="text-lg font-bold">Problems</h2>
+          <TopicToggle/>
           <button className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 bg-green-500 text-white"  
         onClick={()=>{
         setType(1);
@@ -75,9 +78,9 @@ export default function ProblemCard(){
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
               className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500"
             >
               <circle cx="11" cy="11" r="8"></circle>
@@ -94,13 +97,12 @@ export default function ProblemCard(){
         </div>
         <div className="mb-4">
         <div style={{ display: "flex", alignItems: "center" }}>
-          <h4 className="text-lg">Sort By</h4>
+        <p className="text-lg">Sort By : </p>
           {keys.map((key, index) => (
             key!=='link'?
             <SortBy
               key={index}
               name={key}
-            
               sort={handleSort}
               sortOrder={sortOrder}
               sortKey={sortKey}
@@ -113,7 +115,7 @@ export default function ProblemCard(){
           
           { loading?(
             
-            <div className="loaderParent"><div class="loader"></div></div>
+            <div className="loaderParent"><div className="loader"></div></div>
            
            ):(
           <table className="w-full caption-bottom text-sm">
@@ -151,7 +153,7 @@ export default function ProblemCard(){
                   filteredProblems.map((problem,index)=>{
                   
                     return(
-                     <ProblemRow key={index} problem={problem} openModal={openModal} setType={setType} setId={setId} setName={setName} setLevel={setLevel} setLink={setLink} setRequireRework={setRequireRework}/>
+                     <ProblemRow key={index} problem={problem} openModal={openModal} setType={setType} setId={setId} setName={setName} setLevel={setLevel} setLink={setLink} setRequireRework={setRequireRework} topicId={topicId}/>
                     )
                   })
                 }

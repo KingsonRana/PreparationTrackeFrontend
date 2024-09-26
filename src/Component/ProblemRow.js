@@ -4,9 +4,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
 import { faPenFancy } from "@fortawesome/free-solid-svg-icons";
 import states from "../Context/context";
+import { useNavigate } from "react-router-dom";
 
-export default function ProblemRow({problem,openModal,setType,setId,setName, setLevel, setLink, setRequireRework}){
+export default function ProblemRow({problem,openModal,setType,setId,setName, setLevel, setLink, setRequireRework, topicId}){
 
+  const navigate = useNavigate()
   const {deleteproblem} = useContext(states);
  const handleClickDelete = (id)=>{
     alert(" delete id " + id)
@@ -44,8 +46,12 @@ const createdOnReadable = new Date(problem.createdOn).toLocaleString('en-US', {
     hour12: true
   });
 
+   const navToProblemDetail = ()=>{
+     navigate(`/problemDetail/${topicId}/${problem.guid}`)
+  }
+
     return (
-        <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+        <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted" onClick={()=>{navToProblemDetail()}}>
                <td className="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">{problem.id}</td>
                 <td className="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">{problem.name}</td>
                 <td className="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">{createdOnReadable}</td>

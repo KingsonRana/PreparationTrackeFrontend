@@ -193,7 +193,7 @@ const deleteproblem = async (problemId)=>{
   if(response.status===204){
     fetchTopic()
     console.log("Deleted Succesfully")  
-    setProblems((prevProblems)=>prevProblems.filter(prevProblems=>prevProblems.id !== problemId))
+    setProblems((prevProblems)=>prevProblems.filter(prevProblems=>prevProblems.guid !== problemId))
   }
   else if (response.status === 404) {
     
@@ -225,7 +225,7 @@ const updateProblem=async (requestData, id)=>{
       console.log(updatedProblem)
       // Update the problems in the context
       setProblems((prevProblems) => prevProblems.map((problem) =>
-          problem.id === id ? updatedProblem : problem
+          problem.guid === id ? updatedProblem : problem
         )
       );
 

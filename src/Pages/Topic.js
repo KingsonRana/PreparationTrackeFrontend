@@ -1,11 +1,11 @@
 import React, { useContext, useState, useEffect } from "react";
 import states from "../Context/context";
-import TopicRow from "./TopicRow";
-import CreateTopic from "./Forms/CreateTopic";
+import TopicRow from "../Component/TopicRow";
+import CreateTopic from "../Component/Forms/CreateTopic";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import SortBy from "./SortBy";
-import { getComparator } from "./sortUtil";
+import SortBy from "../Component/SortBy";
+import { getComparator } from "../Utils/sortUtil";
 
 export default function TopicCard() {
   const { topic, loading } = useContext(states);
@@ -15,7 +15,7 @@ export default function TopicCard() {
   const [name, setName] = useState("");
   const [minProblems, setMinProblems] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
-  const [sortKey, setSortKey] = useState("");
+  const [sortKey, setSortKey] = useState("default");
   const [sortOrder, setSortOrder] = useState("asc");
   const [filteredTopics, setFilteredTopics] = useState(topic);
 
@@ -32,7 +32,10 @@ export default function TopicCard() {
   useEffect(() => {
     const comparator = getComparator(sortKey, sortOrder);
     setFilteredTopics((prevTopics) => [...prevTopics].sort(comparator));
-  }, [sortKey, sortOrder]);
+  }, [topic, sortKey, sortOrder]);
+
+ 
+
 
   const openModal = () => setModalIsOpen(true);
   const closeModal = () => {
@@ -102,7 +105,7 @@ export default function TopicCard() {
 
       <div className="mb-4">
         <div style={{ display: "flex", alignItems: "center" }}>
-         <div> <h4 className="text-lg">Sort By</h4></div>
+         <div> <p className="text-lg">Sort By : </p></div>
           {keys.map((key, index) => (
             <SortBy
               key={index}

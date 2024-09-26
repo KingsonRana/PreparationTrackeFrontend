@@ -1,6 +1,7 @@
 body{
   height: 100vh;
-  overflow: hidden;
+  overflow: hidden;      
+  font-family:Arial, sans-serif           
 } 
 .Home{
   height: 90vh;
@@ -44,7 +45,7 @@ body{
 }
 
 .card{
-  height: 70%;
+  height: 60%;
   overflow-y: auto;
 }
 
@@ -53,7 +54,7 @@ body{
   cursor: pointer;
   padding: 7px;
   font-weight: bold;
- 
+ color: black;
   
 }
 .sidebarbutton:hover{
@@ -74,10 +75,10 @@ tr {
 
 /* Hover effect */
 tbody tr:hover {
-  background-color: #2fbbe6; /* Light gray background on hover */
+  background-color: #e5e7eb; /* Light gray background on hover */
   transform: translateY(-0.3px); /* Slight lift effect */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Shadow to create pressed look */
-  color: rgb(255, 255, 255);
+  color: rgb(2, 2, 2);
 }
 
 
@@ -223,4 +224,29 @@ td{
 }
 .sortIcon.sortIconCross{
   color: red;
+}
+.main{
+  padding: 10px;
+}
+tr{
+  cursor: pointer;
+}
+
+.toggleButtonInActive{
+ background-color: grey;
+}
+
+.topicToggle{
+ 
+  padding: 0px;
+}
+
+.topicToggle > div{
+ 
+  padding: 0px;
+  box-shadow: none;
+ 
+}
+.topicToggle > div > p{
+ color: black;
 }
